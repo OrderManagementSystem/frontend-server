@@ -10,7 +10,7 @@
                 <v-list-tile-sub-title class="grey--text text--darken-4">
                   {{ order.price | currency('') }} ₽
                 </v-list-tile-sub-title>
-                <v-list-tile-sub-title>{{ order.customer.username }}</v-list-tile-sub-title>
+                <v-list-tile-sub-title>{{ order.customerName }}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
                 <v-list-tile-action-text>
@@ -33,12 +33,12 @@
           <v-card-title class="headline">Взять заказ?</v-card-title>
           <v-card-text>
             Хотите взять заказ <i>{{ selectedOrder.description }}</i> от
-            <b>{{ selectedOrder.customer.username }}</b> за <b>{{ selectedOrder.price | currency('') }} ₽</b>?
+            <b>{{ selectedOrder.customerName }}</b> за <b>{{ selectedOrder.price | currency('') }} ₽</b>?
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn class="green--text darken-1" flat="flat" @click.native="showDialog = false">Отказаться</v-btn>
-            <v-btn class="green--text darken-1" flat="flat" @click.native="takeOrder()">Взять</v-btn>
+            <v-btn class="green--text darken-1" flat="flat" @click.native="showDialog = false; takeOrder()">Взять</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -50,7 +50,7 @@
 
 <script>
   import Vue from 'vue'
-  import axios from 'axios'
+  import { getAllOrders, takeOrder } from '../../utils/orders-api'
 
   const moment = require('moment');
   require('moment/locale/' + navigator.language);
@@ -66,11 +66,7 @@
         ordersEndpoint: 'http://192.168.1.3:8080/orders/',
         orders: [],
         showDialog: false,
-        selectedOrder: {
-          customer: {
-            username: ''
-          }
-        },
+        selectedOrder: '',
         bages: new Map([
           ['WAITING', {
             icon: 'new_releases',
@@ -92,22 +88,13 @@
       }
     },
     methods: {
-      getOrder: function (id) {
-        axios.get(this.ordersEndpoint + id).then((response) => {
-          // do smth
-        }).catch((error) => {
-          console.log(error)
+      getAllOrders() {
+        getAllOrders().then(orders => {
+          this.orders = orders;
         })
       },
-      getOrders: function () {
-        axios.get(this.ordersEndpoint).then((response) => {
-          this.orders = response.data.map(function (order) {
-            order.createdDate = new Date(order.createdDate + 'Z').toString();
-            return order
-          });
-        }).catch((error) => {
-          console.log(error)
-        })
+      takeOrder(order) {
+        takeOrder(order.id);
       },
       takeOrderDialog(orderId) {
         this.orders.forEach(order => {
@@ -117,14 +104,9 @@
         });
         this.showDialog = true;
       },
-      takeOrder(order) {
-        this.showDialog = false;
-        axios.patch(this.ordersEndpoint + order.id + '/take');
-        // todo: удалить этот заказ из списка
-      }
     },
     mounted() {
-      this.getOrders()
+      this.getAllOrders()
     }
   }
 </script>
