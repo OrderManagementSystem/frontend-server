@@ -14,7 +14,6 @@ function getAllOrders() {
       order.createdDate = new Date(order.createdDate + 'Z').toString();
       return order
     }))
-    .catch((error) => console.log)
 }
 
 function takeOrder(id) {
