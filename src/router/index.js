@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/Login'
-import Orders from '@/components/Orders'
+import OrdersTabs from '@/components/OrdersTabs'
 
 Vue.use(Router)
 
@@ -11,11 +11,10 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
-    },
-    {
+    },    {
       path: '/orders',
-      name: 'Orders',
-      component: Orders
+      name: 'OrdersTabs',
+      component: OrdersTabs
     },
   ],
   mode: 'history'

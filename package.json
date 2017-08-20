@@ -1,7 +1,7 @@
 {
-  "name": "frontend",
+  "name": "oms-frontend",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "A Vue.js Order Management System client",
   "author": "kolya-t <toporkov.kolya96@gmail.com>",
   "private": true,
   "scripts": {
@@ -10,9 +10,13 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.16.2",
+    "moment": "^2.18.1",
     "vue": "^2.3.3",
+    "vue-moment": "^2.0.2",
     "vue-router": "^2.6.0",
-    "axios": "^0.16.2"
+    "vue2-filters": "^0.1.9",
+    "vuetify": "^0.14.11"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

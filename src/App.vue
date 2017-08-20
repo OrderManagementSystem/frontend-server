@@ -1,26 +1,17 @@
 <template>
-  <div id="app">
-    <nav-bar></nav-bar>
+  <v-app>
+    <app-bar></app-bar>
     <router-view></router-view>
-  </div>
+  </v-app>
 </template>
 
 <script>
-  import NavigationBar from '@/components/NavBar'
-  import NavBar from "./components/NavBar";
+  import AppBar from '@/components/AppBar'
 
   export default {
-    components: {NavBar}, name: 'app'
+    components: {
+      AppBar
+    },
+    name: 'app'
   }
 </script>
-
-<style>
-  /*#app {*/
-    /*font-family: 'Avenir', Helvetica, Arial, sans-serif;*/
-    /*-webkit-font-smoothing: antialiased;*/
-    /*-moz-osx-font-smoothing: grayscale;*/
-    /*text-align: center;*/
-    /*color: #2c3e50;*/
-    /*margin-top: 60px;*/
-  /*}*/
-</style>
