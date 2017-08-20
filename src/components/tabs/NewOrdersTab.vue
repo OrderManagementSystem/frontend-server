@@ -4,7 +4,7 @@
       <v-card>
         <v-list two-line>
           <template v-for="(order, index) in orders">
-            <v-list-tile ripple v-bind:key="index">
+            <v-list-tile ripple v-bind:key="index" @click.native.stop="takeOrderDialog(order.id)">
               <v-list-tile-content>
                 <v-list-tile-title>{{ order.description }}</v-list-tile-title>
                 <v-list-tile-sub-title class="grey--text text--darken-4">
@@ -26,7 +26,26 @@
         </v-list>
       </v-card>
     </v-flex>
+
+    <v-layout row justify-center>
+      <v-dialog v-model="showDialog">
+        <v-card>
+          <v-card-title class="headline">Взять заказ?</v-card-title>
+          <v-card-text>
+            Хотите взять заказ <i>{{ selectedOrder.description }}</i> от
+            <b>{{ selectedOrder.customer.username }}</b> за <b>{{ selectedOrder.price | currency('') }} ₽</b>?
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn class="green--text darken-1" flat="flat" @click.native="showDialog = false">Отказаться</v-btn>
+            <v-btn class="green--text darken-1" flat="flat" @click.native="takeOrder()">Взять</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-layout>
   </v-layout>
+
+
 </template>
 
 <script>
@@ -46,6 +65,12 @@
       return {
         ordersEndpoint: 'http://192.168.1.3:8080/orders/',
         orders: [],
+        showDialog: false,
+        selectedOrder: {
+          customer: {
+            username: ''
+          }
+        },
         bages: new Map([
           ['WAITING', {
             icon: 'new_releases',
@@ -83,6 +108,19 @@
         }).catch((error) => {
           console.log(error)
         })
+      },
+      takeOrderDialog(orderId) {
+        this.orders.forEach(order => {
+          if (order.id === orderId) {
+            this.selectedOrder = order;
+          }
+        });
+        this.showDialog = true;
+      },
+      takeOrder(order) {
+        this.showDialog = false;
+        axios.patch(this.ordersEndpoint + order.id + '/take');
+        // todo: удалить этот заказ из списка
       }
     },
     mounted() {

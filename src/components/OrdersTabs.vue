@@ -3,7 +3,7 @@
     <v-tabs-bar slot="activators" class="primary">
       <v-tabs-slider class="white"></v-tabs-slider>
       <v-tabs-item href="#tab-0">
-        Все заказы
+        Новые заказы
       </v-tabs-item>
       <v-tabs-item href="#tab-1">
         Мои заказы
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-  import AllOrdersTab from '@/components/tabs/AllOrdersTab'
+  import NewOrdersTab from '@/components/tabs/NewOrdersTab'
   import MyOrdersTab from '@/components/tabs/MyOrdersTab'
 
   export default {
@@ -28,7 +28,7 @@
     data() {
       return {
         tabs: [
-          AllOrdersTab,
+          NewOrdersTab,
           MyOrdersTab
         ]
       }
