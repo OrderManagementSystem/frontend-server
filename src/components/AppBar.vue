@@ -35,7 +35,7 @@
   Vue.use(Vue2Filters);
 
   export default {
-    name: 'appbar',
+    name: 'app-bar',
     data() {
       return {
         dialog: false,
@@ -43,6 +43,9 @@
           money: 1500
         }
       }
+    },
+    mounted() {
+
     }
   }
 </script>

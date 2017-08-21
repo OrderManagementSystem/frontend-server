@@ -1,36 +1,40 @@
 <template>
-  <div>
-    <form v-on:submit.prevent="submit()">
-      <v-container fluid>
-        <v-layout row wrap>
-          <v-flex xs12 sm12 md4 offset-md4>
-            <h2 class="display-1">Вход в систему</h2>
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <form v-on:submit.prevent="submit()">
+          <v-container fluid>
             <v-layout row wrap>
-              <v-flex xs12>
-                <v-text-field
-                  label="Имя пользователя"
-                  autofocus="autofocus"
-                  v-model="username"
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12>
-                <v-text-field
-                  name="password"
-                  label="Пароль"
-                  v-model="password"
-                  :append-icon="passwordVisible ? 'visibility' : 'visibility_off'"
-                  :append-icon-cb="() => (passwordVisible = !passwordVisible)"
-                  :type="passwordVisible ? 'text' : 'password'"
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 cl text-xs-right>
-                <v-btn primary :loading="loading" type="submit">Войти</v-btn>
+              <v-flex xs12 sm12 md4 offset-md4>
+                <!--<h2 class="display-1">Вход в систему</h2>-->
+                <v-layout row wrap>
+                  <v-flex xs12>
+                    <v-text-field
+                      label="Имя пользователя"
+                      autofocus="autofocus"
+                      v-model="username"
+                    ></v-text-field>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-text-field
+                      name="password"
+                      label="Пароль"
+                      v-model="password"
+                      :append-icon="passwordVisible ? 'visibility' : 'visibility_off'"
+                      :append-icon-cb="() => (passwordVisible = !passwordVisible)"
+                      :type="passwordVisible ? 'text' : 'password'"
+                    ></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 cl text-xs-right>
+                    <v-btn primary :loading="loading" type="submit">Войти</v-btn>
+                  </v-flex>
+                </v-layout>
               </v-flex>
             </v-layout>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </form>
+          </v-container>
+        </form>
+      </div>
+    </div>
 
     <v-snackbar
       :timeout="5000"
@@ -79,3 +83,23 @@
     }
   }
 </script>
+
+<style>
+  .outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+
+  .middle {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .inner {
+    margin-left: auto;
+    margin-right: auto;
+    /*width: !*whatever width you want*!;*/
+  }
+</style>
