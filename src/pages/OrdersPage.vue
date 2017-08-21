@@ -24,8 +24,8 @@
 
 <script>
   import AppBar from '@/components/AppBar'
-  import NewOrdersTab from '@/components/tabs/NewOrdersTab'
-  import MyOrdersTab from '@/components/tabs/MyOrdersTab'
+  import NewOrdersTab from '@/components/NewOrdersTab'
+  import MyOrdersTab from '@/components/MyOrdersTab'
 
   export default {
     name: 'orders-page',

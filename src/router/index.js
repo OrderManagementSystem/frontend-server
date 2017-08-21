@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import LoginPage from "@/components/LoginPage";
-import OrdersPage from "@/components/OrdersPage";
+import LoginPage from "@/pages/LoginPage";
+import OrdersPage from "@/pages/OrdersPage";
 
 Vue.use(VueRouter);
 

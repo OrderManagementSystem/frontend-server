@@ -69,7 +69,7 @@
 
 <script>
   import Vue from 'vue'
-  import {getAllOrders, takeOrder} from '../../utils/orders-api'
+  import {getAllOrders, takeOrder} from '../utils/orders-api'
 
   const moment = require('moment');
   require('moment/locale/ru');
