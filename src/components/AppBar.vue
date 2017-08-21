@@ -20,7 +20,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">Остаться</v-btn>
-            <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">Выйти</v-btn>
+            <v-btn class="green--text darken-1" flat="flat" @click.native="logout()">Выйти</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -31,6 +31,7 @@
 <script>
   import Vue from 'vue'
   import Vue2Filters from 'vue2-filters'
+  import {logout} from '../utils/auth'
 
   Vue.use(Vue2Filters);
 
@@ -40,6 +41,12 @@
       return {
         dialog: false,
         authUser: JSON.parse(window.localStorage.getItem('authUser')).user
+      }
+    },
+    methods: {
+      logout() {
+        logout();
+        this.$router.push('/login')
       }
     }
   }

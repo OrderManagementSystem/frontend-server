@@ -58,3 +58,7 @@ export function getHeader() {
     'Authorization': 'Bearer ' + tokenData.access_token
   }
 }
+
+export function logout() {
+  window.localStorage.removeItem('authUser');
+}
