@@ -53,7 +53,7 @@
   Vue.use(Router);
 
   export default {
-    name: 'login',
+    name: 'login-page',
     data() {
       return {
         username: '',
@@ -69,7 +69,7 @@
         login(this.username, this.password
         ).then(response => {
           this.loading = false;
-          this.$router.push('/orders')
+          this.$router.push('/')
         }).catch(error => {
           this.loading = false;
           this.snackbar = true;

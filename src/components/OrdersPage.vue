@@ -24,7 +24,7 @@
   import MyOrdersTab from '@/components/tabs/MyOrdersTab'
 
   export default {
-    name: 'OrdersTabs',
+    name: 'orders-page',
     data() {
       return {
         tabs: [

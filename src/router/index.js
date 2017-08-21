@@ -1,21 +1,39 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Login from '@/components/Login'
-import OrdersTabs from '@/components/OrdersTabs'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import LoginPage from "@/components/LoginPage";
+import OrdersPage from "@/components/OrdersPage";
 
-Vue.use(Router)
+Vue.use(VueRouter);
 
-export default new Router({
-  routes: [
-    {
-      path: '/login',
-      name: 'Login',
-      component: Login
-    },    {
-      path: '/orders',
-      name: 'OrdersTabs',
-      component: OrdersTabs
-    },
-  ],
-  mode: 'history'
-})
+const routes = [
+  {
+    path: '/login',
+    name: 'LoginPage',
+    component: LoginPage
+  },
+  {
+    path: '/',
+    name: 'OrdersPage',
+    component: OrdersPage
+  },
+];
+
+const router = new VueRouter({
+  mode: 'history',
+  routes
+});
+
+router.beforeEach((to, from, next) => {
+  const authUser = JSON.parse(window.localStorage.getItem('authUser'));
+  const authorized = authUser && authUser.access_token;
+
+  if ((to.path === '/') && !authorized) {
+    next('/login')
+  } else if ((to.path === '/login') && authorized) {
+    next('/')
+  }
+
+  next();
+});
+
+export default router;

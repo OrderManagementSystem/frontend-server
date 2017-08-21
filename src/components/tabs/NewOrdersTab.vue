@@ -79,7 +79,7 @@
   });
 
   export default {
-    name: 'orders',
+    name: 'new-orders-tab',
     data() {
       return {
         orders: [],
