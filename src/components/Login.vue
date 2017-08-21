@@ -1,55 +1,56 @@
 <template>
-  <form v-on:submit.prevent="login()">
-    <v-container fluid>
-      <v-layout row wrap>
-        <v-flex xs12 sm12 md4 offset-md4>
-          <h2 class="display-1">Вход в систему</h2>
-          <v-layout row wrap>
-            <v-flex xs12>
-              <v-text-field
-                label="Имя пользователя"
-                autofocus="autofocus"
-                v-model="username"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs12>
-              <v-text-field
-                name="password"
-                label="Пароль"
-                v-model="password"
-                :append-icon="passwordVisible ? 'visibility' : 'visibility_off'"
-                :append-icon-cb="() => (passwordVisible = !passwordVisible)"
-                :type="passwordVisible ? 'text' : 'password'"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs12 cl text-xs-right>
-              <v-btn primary :loading="loading" type="submit">Войти</v-btn>
-            </v-flex>
-          </v-layout>
-        </v-flex>
-      </v-layout>
-    </v-container>
-  </form>
+  <div>
+    <form v-on:submit.prevent="submit()">
+      <v-container fluid>
+        <v-layout row wrap>
+          <v-flex xs12 sm12 md4 offset-md4>
+            <h2 class="display-1">Вход в систему</h2>
+            <v-layout row wrap>
+              <v-flex xs12>
+                <v-text-field
+                  label="Имя пользователя"
+                  autofocus="autofocus"
+                  v-model="username"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field
+                  name="password"
+                  label="Пароль"
+                  v-model="password"
+                  :append-icon="passwordVisible ? 'visibility' : 'visibility_off'"
+                  :append-icon-cb="() => (passwordVisible = !passwordVisible)"
+                  :type="passwordVisible ? 'text' : 'password'"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12 cl text-xs-right>
+                <v-btn primary :loading="loading" type="submit">Войти</v-btn>
+              </v-flex>
+            </v-layout>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </form>
+
+    <v-snackbar
+      :timeout="5000"
+      :bottom="true"
+      :right="true"
+      v-model="snackbar"
+    >
+      Ошибка авторизации
+    <v-btn flat class="pink--text" @click.native="snackbar = false">Закрыть</v-btn>
+    </v-snackbar>
+  </div>
 </template>
 
 <script>
   import Vue from 'vue'
   import axios from "axios";
   import Router from 'vue-router'
-  import {getHeader} from '../utils/auth'
-  import {BASE_URL} from "../utils/orders-api";
-  import {client_id, client_secret} from "../env";
+  import {login} from '../utils/auth'
 
   Vue.use(Router);
-
-  const TOKEN_URL = `${BASE_URL}/oauth/token`;
-  const LOGGED_USER_URL = `${BASE_URL}/authenticated`;
-
-  const authUser = {
-    access_token: null,
-    refresh_token: null,
-    user: null
-  };
 
   export default {
     name: 'login',
@@ -58,45 +59,22 @@
         username: '',
         password: '',
         passwordVisible: false,
-        loading: false
+        loading: false,
+        snackbar: false
       }
     },
     methods: {
-      login() {
+      submit() {
         this.loading = true;
-        // получение access_token и refresh_token
-        axios({
-          method: 'POST',
-          url: TOKEN_URL,
-
-          headers: {
-            'Authorization': 'Basic ' + btoa(client_id + ':' + client_secret),
-          },
-
-          params: {
-            username: this.username,
-            password: this.password,
-            grant_type: 'password',
-            client_id: client_id,
-            client_secret: client_secret,
-          },
-        }).then(response => {
-          authUser.access_token =  response.data.access_token;
-          authUser.refresh_token =  response.data.refresh_token;
-          window.localStorage.setItem('authUser', JSON.stringify(authUser));
-
-          // получение объекта авторизованного пользователя
-          axios({
-            method: 'GET',
-            url: LOGGED_USER_URL,
-            headers: getHeader()
-          }).then(response => {
-            authUser.user = response.data;
-            window.localStorage.setItem('authUser', JSON.stringify(authUser));
-
-            this.loading = false;
-          }).catch(error => console.log(error))
-        }).catch(error => console.log(error));
+        login(this.username, this.password
+        ).then(response => {
+          this.loading = false;
+          this.$router.push('/orders')
+        }).catch(error => {
+          this.loading = false;
+          this.snackbar = true;
+          this.password = '';
+        })
       }
     }
   }

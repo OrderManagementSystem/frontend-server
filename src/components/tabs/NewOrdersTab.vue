@@ -62,7 +62,7 @@
       v-model="snackbar"
     >
       {{ snackbarText }}
-      <v-btn flat class="pink--text" @click.native="snackbar = false">Close</v-btn>
+      <v-btn flat class="pink--text" @click.native="snackbar = false">Закрыть</v-btn>
     </v-snackbar>
   </div>
 </template>
