@@ -2,7 +2,7 @@
   <v-toolbar dark class="primary" dense>
     <v-toolbar-title class="white--text">
       <v-icon dark medium>account_balance_wallet</v-icon>
-      {{ loggedUser.money | currency('') }} ₽
+      {{ authUser.money | currency('') }} ₽
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-layout row justify-center style="position: relative;">
@@ -39,13 +39,8 @@
     data() {
       return {
         dialog: false,
-        loggedUser: {
-          money: 1500
-        }
+        authUser: JSON.parse(window.localStorage.getItem('authUser')).user
       }
-    },
-    mounted() {
-
     }
   }
 </script>
