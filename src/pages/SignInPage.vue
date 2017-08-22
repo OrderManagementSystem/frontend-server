@@ -28,7 +28,7 @@
                     <v-btn primary :loading="loading" type="submit">Войти</v-btn>
                   </v-flex>
                   <v-flex xs12>
-                    <router-link replace="true" to="/sign-up">Ещё не зарегистрированы?</router-link>
+                    <router-link replace to="/sign-up">Ещё не зарегистрированы?</router-link>
                   </v-flex>
                 </v-layout>
               </v-flex>

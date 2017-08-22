@@ -43,7 +43,7 @@
                     <v-btn primary :loading="loading" type="submit">Регистрация</v-btn>
                   </v-flex>
                   <v-flex xs12>
-                    <router-link replace="true" to="/sign-in">Уже зарегистрированы?</router-link>
+                    <router-link replace to="/sign-in">Уже зарегистрированы?</router-link>
                   </v-flex>
                 </v-layout>
               </v-flex>
