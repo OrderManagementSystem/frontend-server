@@ -1,4 +1,5 @@
 import axios from "axios";
+import {getHeader} from '../utils/auth'
 
 const BASE_URL = 'http://localhost:8080';
 
@@ -10,8 +11,11 @@ export {
 
 function getAllOrders() {
   const url = `${BASE_URL}/orders`;
-  return axios.get(url)
-    .then(response => response.data.map(order => {
+  return axios({
+    method: 'GET',
+    url,
+    headers: getHeader()
+  }).then(response => response.data.map(order => {
       order.createdDate = new Date(order.createdDate + 'Z').toString();
       return order
     }))

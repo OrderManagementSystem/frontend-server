@@ -4,11 +4,11 @@
     <v-tabs dark fixed centered>
       <v-tabs-bar slot="activators" class="primary">
         <v-tabs-slider class="white"></v-tabs-slider>
-        <v-tabs-item href="#tab-0">
-          Новые заказы
-        </v-tabs-item>
-        <v-tabs-item href="#tab-1">
-          Мои заказы
+        <v-tabs-item
+          v-for="(tab, i) in tabs"
+          :key="i"
+          :href="'#tab-' + i">
+          {{ tab.title }}
         </v-tabs-item>
       </v-tabs-bar>
       <v-tabs-content
@@ -16,7 +16,7 @@
         :key="i"
         :id="'tab-' + i"
       >
-        <component v-bind:is="tab"></component>
+        <component v-bind:is="tab.content"></component>
       </v-tabs-content>
     </v-tabs>
   </div>
@@ -34,9 +34,28 @@
     },
     data() {
       return {
-        tabs: [
-          NewOrdersTab,
-          MyOrdersTab
+        authUser: JSON.parse(window.localStorage.getItem('authUser')).user,
+        tabs: null
+      }
+    },
+    mounted() {
+      if (this.authUser.type === 'Performer') {
+        this.tabs = [
+          {
+            title: 'Новые заказы',
+            content: NewOrdersTab
+          },
+          {
+            title: 'Мои заказы',
+            content: MyOrdersTab
+          }
+        ]
+      } else {
+        this.tabs = [
+          {
+            title: 'Мои заказы',
+            content: MyOrdersTab
+          }
         ]
       }
     }
