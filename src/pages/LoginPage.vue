@@ -73,7 +73,7 @@
         login(this.username, this.password
         ).then(response => {
           this.loading = false;
-          this.$router.push('/')
+          this.$router.replace('/')
         }).catch(error => {
           this.loading = false;
           this.snackbar = true;

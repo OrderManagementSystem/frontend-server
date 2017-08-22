@@ -46,7 +46,7 @@
     methods: {
       logout() {
         logout();
-        this.$router.push('/login')
+        this.$router.replace('/login')
       }
     }
   }
