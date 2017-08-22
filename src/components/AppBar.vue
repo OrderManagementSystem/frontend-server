@@ -31,7 +31,7 @@
 <script>
   import Vue from 'vue'
   import Vue2Filters from 'vue2-filters'
-  import {logout} from '../utils/auth'
+  import {signOut} from '../utils/auth'
 
   Vue.use(Vue2Filters);
 
@@ -45,8 +45,8 @@
     },
     methods: {
       logout() {
-        logout();
-        this.$router.replace('/login')
+        signOut();
+        this.$router.replace('/sign-in')
       }
     }
   }

@@ -9,6 +9,7 @@ Vue.use(Router);
 
 const TOKEN_URL = `${BASE_URL}/oauth/token`;
 const LOGGED_USER_URL = `${BASE_URL}/authenticated`;
+const SIGN_UP_URL = `${BASE_URL}/users`;
 
 const authUser = {
   access_token: null,
@@ -16,7 +17,7 @@ const authUser = {
   user: null
 };
 
-export function login(username, password) {
+export function signIn(username, password) {
   // получение access_token и refresh_token
   return axios({
     method: 'post',
@@ -50,6 +51,21 @@ export function login(username, password) {
   })
 }
 
+export function signUp(username, password, userType) {
+  return axios({
+    method: 'post',
+    url: SIGN_UP_URL,
+    data: {
+      username: username,
+      password: password,
+      userType: userType
+    },
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}
+
 export function getHeader() {
   const tokenData = JSON.parse(window.localStorage.getItem('authUser'));
 
@@ -59,6 +75,6 @@ export function getHeader() {
   }
 }
 
-export function logout() {
+export function signOut() {
   window.localStorage.removeItem('authUser');
 }

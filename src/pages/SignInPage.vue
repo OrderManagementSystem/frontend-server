@@ -6,7 +6,6 @@
           <v-container fluid>
             <v-layout row wrap>
               <v-flex xs12 sm12 md4 offset-md4>
-                <!--<h2 class="display-1">Вход в систему</h2>-->
                 <v-layout row wrap>
                   <v-flex xs12>
                     <v-text-field
@@ -28,6 +27,9 @@
                   <v-flex xs12 cl text-xs-right>
                     <v-btn primary :loading="loading" type="submit">Войти</v-btn>
                   </v-flex>
+                  <v-flex xs12>
+                    <router-link replace="true" to="/sign-up">Ещё не зарегистрированы?</router-link>
+                  </v-flex>
                 </v-layout>
               </v-flex>
             </v-layout>
@@ -43,7 +45,8 @@
       v-model="snackbar"
     >
       Ошибка авторизации
-    <v-btn flat class="pink--text" @click.native="snackbar = false">Закрыть</v-btn>
+
+      <v-btn flat class="pink--text" @click.native="snackbar = false">Закрыть</v-btn>
     </v-snackbar>
   </div>
 </template>
@@ -51,10 +54,7 @@
 <script>
   import Vue from 'vue'
   import axios from "axios";
-  import Router from 'vue-router'
-  import {login} from '../utils/auth'
-
-  Vue.use(Router);
+  import {signIn} from '../utils/auth'
 
   export default {
     name: 'login-page',
@@ -70,8 +70,7 @@
     methods: {
       submit() {
         this.loading = true;
-        login(this.username, this.password
-        ).then(response => {
+        signIn(this.username, this.password).then(response => {
           this.loading = false;
           this.$router.replace('/')
         }).catch(error => {
