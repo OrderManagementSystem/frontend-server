@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import SignInPage from "@/pages/SignInPage";
 import SignUpPage from "@/pages/SignUpPage";
 import OrdersPage from "@/pages/OrdersPage";
+import {isLoggedIn} from '../utils/auth'
 
 Vue.use(VueRouter);
 
@@ -38,12 +39,9 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const authUser = JSON.parse(window.localStorage.getItem('authUser'));
-  const authorized = authUser && authUser.access_token;
-
-  if (to.meta.requiresAuth && !authorized) {
+  if (to.meta.requiresAuth && !isLoggedIn()) {
     next('/sign-in')
-  } else if (!to.meta.requiresAuth && authorized) {
+  } else if (!to.meta.requiresAuth && isLoggedIn()) {
     next('/')
   }
 

@@ -122,8 +122,8 @@
           this.snackbarText = 'Ошибка при загрузке списка заказов';
         });
       },
-      takeOrder(order) {
-        takeOrder(order.id);
+      takeOrder() {
+        takeOrder(this.selectedOrder.id).then(this.getAllOrders())
       },
       takeOrderDialog(orderId) {
         this.orders.forEach(order => {

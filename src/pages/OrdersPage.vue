@@ -26,6 +26,7 @@
   import AppBar from '@/components/AppBar'
   import NewOrdersTab from '@/components/NewOrdersTab'
   import MyOrdersTab from '@/components/MyOrdersTab'
+  import {getAuthUser} from '../utils/auth'
 
   export default {
     name: 'orders-page',
@@ -34,7 +35,7 @@
     },
     data() {
       return {
-        authUser: JSON.parse(window.localStorage.getItem('authUser')).user,
+        authUser: getAuthUser(),
         tabs: null
       }
     },

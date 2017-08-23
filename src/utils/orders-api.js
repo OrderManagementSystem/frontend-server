@@ -1,5 +1,5 @@
 import axios from "axios";
-import {getHeader} from '../utils/auth'
+import {getAuthorizationHeader, refreshAccessToken} from "../utils/auth";
 
 const BASE_URL = 'http://localhost:8080';
 
@@ -10,19 +10,26 @@ export {
 }
 
 function getAllOrders() {
-  const url = `${BASE_URL}/orders`;
   return axios({
     method: 'GET',
-    url,
-    headers: getHeader()
-  }).then(response => response.data.map(order => {
-      order.createdDate = new Date(order.createdDate + 'Z').toString();
-      return order
-    }))
+    url: `${BASE_URL}/orders`,
+    headers: getAuthorizationHeader()
+  }).then(response => response.data.content.map(order => {
+    order.createdDate = new Date(order.createdDate + 'Z').toString();
+    return order
+  })).catch(error => {
+    return refreshAccessToken().then(r => getAllOrders())
+  })
 }
 
 function takeOrder(id) {
-  const url = `${BASE_URL}/${id}/take`;
-  axios.patch(url);
-  // todo: удалить этот заказ из списка
+  return axios({
+    method: 'PATCH',
+    url: `${BASE_URL}/orders/${id}/take`,
+    headers: getAuthorizationHeader()
+  }).catch(error => {
+    if (error.status === 401) {
+      return refreshAccessToken().then(r => takeOrder(id))
+    }
+  })
 }

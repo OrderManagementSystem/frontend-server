@@ -31,7 +31,7 @@
 <script>
   import Vue from 'vue'
   import Vue2Filters from 'vue2-filters'
-  import {signOut} from '../utils/auth'
+  import {signOut, getAuthUser} from '../utils/auth'
 
   Vue.use(Vue2Filters);
 
@@ -40,7 +40,7 @@
     data() {
       return {
         dialog: false,
-        authUser: JSON.parse(window.localStorage.getItem('authUser')).user
+        authUser: getAuthUser()
       }
     },
     methods: {
