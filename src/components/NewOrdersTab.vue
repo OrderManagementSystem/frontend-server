@@ -116,14 +116,13 @@
           this.orders = orders;
           this.loading = false;
         }).catch(error => {
-          console.log(error);
           this.loading = false;
           this.snackbar = true;
           this.snackbarText = 'Ошибка при загрузке списка заказов';
         });
       },
       takeOrder() {
-        takeOrder(this.selectedOrder.id).then(this.getAllOrders())
+        takeOrder(this.selectedOrder.id).then(response => this.getAllOrders())
       },
       takeOrderDialog(orderId) {
         this.orders.forEach(order => {

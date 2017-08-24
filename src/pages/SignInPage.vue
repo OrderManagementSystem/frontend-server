@@ -45,19 +45,16 @@
       v-model="snackbar"
     >
       Ошибка авторизации
-
       <v-btn flat class="pink--text" @click.native="snackbar = false">Закрыть</v-btn>
     </v-snackbar>
   </div>
 </template>
 
 <script>
-  import Vue from 'vue'
-  import axios from "axios";
   import {signIn} from '../utils/auth'
 
   export default {
-    name: 'login-page',
+    name: 'sign-in-page',
     data() {
       return {
         username: '',
@@ -70,10 +67,7 @@
     methods: {
       submit() {
         this.loading = true;
-        signIn(this.username, this.password).then(response => {
-          this.loading = false;
-          this.$router.replace('/')
-        }).catch(error => {
+        signIn(this.username, this.password).catch(error => {
           this.loading = false;
           this.snackbar = true;
           this.password = '';

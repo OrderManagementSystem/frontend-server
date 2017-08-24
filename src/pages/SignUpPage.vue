@@ -59,19 +59,17 @@
       :right="true"
       v-model="snackbar"
     >
-      {{ snackbarText }}
+      Ошибка при регистрации
       <v-btn flat class="pink--text" @click.native="snackbar = false">Закрыть</v-btn>
     </v-snackbar>
   </div>
 </template>
 
 <script>
-  import Vue from 'vue'
-  import axios from "axios";
-  import {signUp, signIn} from '../utils/auth'
+  import {signUp} from '../utils/auth'
 
   export default {
-    name: 'login-page',
+    name: 'sign-up-page',
     data() {
       return {
         username: "",
@@ -93,27 +91,15 @@
         passwordVisible: false,
         loading: false,
         snackbar: false,
-        snackbarText: ''
       }
     },
     methods: {
       submit() {
         this.loading = true;
-        signUp(this.username, this.password, this.userType.value).then(response => {
+        signUp(this.username, this.password, this.userType.value).catch(error => {
           this.loading = false;
           this.snackbar = true;
-          this.snackbarText = 'Вы успешно зарегистрировались, теперь можете войти';
-
-          const router = this.$router;
-          setTimeout(function() {
-            router.replace('/sign-in')
-          }, 1000)
-        }).catch(error => {
-          this.loading = false;
-          this.snackbar = true;
-          this.snackbarText = 'Ошибка при регистрации';
           this.password = '';
-          this.confirmPassword = '';
         })
       }
     }

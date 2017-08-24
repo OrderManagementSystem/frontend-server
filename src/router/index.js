@@ -7,35 +7,33 @@ import {isLoggedIn} from '../utils/auth'
 
 Vue.use(VueRouter);
 
-const routes = [
-  {
-    path: '/sign-in',
-    name: 'SignInPage',
-    component: SignInPage,
-    meta: {
-      requiresAuth: false
-    }
-  },
-  {
-    path: '/sign-up',
-    name: 'SignUpPage',
-    component: SignUpPage,
-    meta: {
-      requiresAuth: false
-    }
-  },
-  {
-    path: '/',
-    name: 'OrdersPage',
-    component: OrdersPage,
-    meta: {
-      requiresAuth: true
-    }
-  },
-];
-
 const router = new VueRouter({
-  routes
+  routes: [
+    {
+      path: '/sign-in',
+      name: 'SignInPage',
+      component: SignInPage,
+      meta: {
+        requiresAuth: false
+      }
+    },
+    {
+      path: '/sign-up',
+      name: 'SignUpPage',
+      component: SignUpPage,
+      meta: {
+        requiresAuth: false
+      }
+    },
+    {
+      path: '/',
+      name: 'OrdersPage',
+      component: OrdersPage,
+      meta: {
+        requiresAuth: true
+      }
+    },
+  ]
 });
 
 router.beforeEach((to, from, next) => {
