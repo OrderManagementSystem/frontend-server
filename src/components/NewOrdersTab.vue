@@ -1,9 +1,5 @@
 <template>
   <div>
-    <div v-show="loading" style="text-align: center">
-      <v-progress-circular indeterminate v-bind:size="50" class="primary--text"></v-progress-circular>
-    </div>
-
     <div v-show="orders.length > 0">
       <v-layout row>
         <v-flex xs12 sm6 offset-sm3>
@@ -53,6 +49,11 @@
           </v-dialog>
         </v-layout>
       </v-layout>
+      <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading" spinner="waveDots">
+        <v-progress-circular slot="spinner" indeterminate v-bind:size="50" class="primary--text"></v-progress-circular>
+        <p slot="no-results">Нет заказов</p>
+        <p slot="no-more"></p>
+      </infinite-loading>
     </div>
 
     <v-snackbar
@@ -69,7 +70,8 @@
 
 <script>
   import Vue from 'vue'
-  import {getAllOrders, takeOrder} from '../utils/orders-api'
+  import InfiniteLoading from 'vue-infinite-loading';
+  import {getOrdersPage, takeOrder} from '../utils/orders-api'
 
   const moment = require('moment');
   require('moment/locale/ru');
@@ -80,11 +82,14 @@
 
   export default {
     name: 'new-orders-tab',
+    components: {
+      InfiniteLoading
+    },
     data() {
       return {
         orders: [],
+        page: 1,
 
-        loading: true,
         snackbar: false,
         snackbarText: '',
 
@@ -111,18 +116,22 @@
       }
     },
     methods: {
-      getAllOrders() {
-        getAllOrders().then(orders => {
-          this.orders = orders;
-          this.loading = false;
+      onInfinite() {
+        getOrdersPage(this.page).then(orders => {
+          if (orders.length === 0) {
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+          } else {
+            this.orders = this.orders.concat(orders);
+            this.page++;
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
+          }
         }).catch(error => {
-          this.loading = false;
           this.snackbar = true;
           this.snackbarText = 'Ошибка при загрузке списка заказов';
-        });
+        })
       },
       takeOrder() {
-        takeOrder(this.selectedOrder.id).then(response => this.getAllOrders())
+        takeOrder(this.selectedOrder.id)
       },
       takeOrderDialog(orderId) {
         this.orders.forEach(order => {
@@ -132,9 +141,6 @@
         });
         this.showDialog = true;
       },
-    },
-    mounted() {
-      this.getAllOrders();
     }
   }
 </script>
