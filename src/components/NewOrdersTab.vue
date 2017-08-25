@@ -19,8 +19,8 @@
                       {{ order.createdDate | moment('calendar') }}
                     </v-list-tile-action-text>
                     <v-icon class="grey--text text--lighten-1"
-                            v-tooltip:left="{ html: bages.get(order.status).tooltip }">
-                      {{ bages.get(order.status).icon }}
+                            v-tooltip:left="{ html: bages[order.status].tooltip }">
+                      {{ bages[order.status].icon }}
                     </v-icon>
                   </v-list-tile-action>
                 </v-list-tile>
@@ -49,10 +49,10 @@
           </v-dialog>
         </v-layout>
       </v-layout>
-      <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading" spinner="waveDots">
+      <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading">
         <v-progress-circular slot="spinner" indeterminate v-bind:size="50" class="primary--text"></v-progress-circular>
-        <p slot="no-results">Нет заказов</p>
-        <p slot="no-more"></p>
+        <span slot="no-results">Нет заказов</span>
+        <span slot="no-more">Всего {{ orders.length }} заказов</span>
       </infinite-loading>
     </div>
 
@@ -71,7 +71,7 @@
 <script>
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading';
-  import {getOrdersPage, takeOrder} from '../utils/orders-api'
+  import {getOrdersPage, takeOrder, bages} from '../utils/orders-api'
 
   const moment = require('moment');
   require('moment/locale/ru');
@@ -88,31 +88,14 @@
     data() {
       return {
         orders: [],
-        page: 1,
+        page: 0,
 
         snackbar: false,
         snackbarText: '',
 
         showDialog: false,
         selectedOrder: '',
-        bages: new Map([
-          ['WAITING', {
-            icon: 'new_releases',
-            tooltip: 'Новый заказ'
-          }],
-          ['IN_PROGRESS', {
-            icon: 'fast_forward',
-            tooltip: 'Заказ выполняется'
-          }],
-          ['READY', {
-            icon: 'done',
-            tooltip: 'Заказ выполнен и ожидает оплаты'
-          }],
-          ['COMPLETED', {
-            icon: 'done_all',
-            tooltip: 'Заказ выполнен и оплачен'
-          }]
-        ])
+        bages
       }
     },
     methods: {
@@ -131,7 +114,12 @@
         })
       },
       takeOrder() {
-        takeOrder(this.selectedOrder.id)
+        takeOrder(this.selectedOrder.id).then(response => {
+
+        }).catch(error => {
+          this.snackbar = true;
+          this.snackbarText = 'Ошибка при попытке взять заказ';
+        })
       },
       takeOrderDialog(orderId) {
         this.orders.forEach(order => {
