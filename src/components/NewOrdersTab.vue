@@ -115,10 +115,11 @@
       },
       takeOrder() {
         takeOrder(this.selectedOrder.id).then(response => {
-
+          this.orders.splice(this.orders.indexOf(this.selectedOrder), 1);
         }).catch(error => {
           this.snackbar = true;
-          this.snackbarText = 'Ошибка при попытке взять заказ';
+          this.snackbarText = 'Возможно, заказ уже кто-то взял';
+          this.orders.splice(this.orders.indexOf(this.selectedOrder), 1);
         })
       },
       takeOrderDialog(orderId) {
