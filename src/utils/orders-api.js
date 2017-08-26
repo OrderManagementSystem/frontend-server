@@ -1,14 +1,16 @@
 import HTTP from "./http-common";
 
 export function getOrdersPage(page, size = 15) {
-  return HTTP.get(`/orders?page=${page}&size=${size}`).then(({data}) => data.map(order => {
+  return HTTP.get(`/orders?sort=status,asc&sort=createdDate,desc&page=${page}&size=${size}`)
+    .then(({data}) => data.map(order => {
     order.createdDate = new Date(order.createdDate + 'Z').toString();
     return order
   }))
 }
 
 export function getUserOrdersPage(userId, page, size = 15) {
-  return HTTP.get(`users/${userId}/orders?page=${page}&size=${size}`).then(({data}) => data.map(order => {
+  return HTTP.get(`users/${userId}/orders?sort=status,asc&sort=createdDate,desc&page=${page}&size=${size}`)
+    .then(({data}) => data.map(order => {
     order.createdDate = new Date(order.createdDate + 'Z').toString();
     return order
   }))
