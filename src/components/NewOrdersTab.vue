@@ -80,7 +80,7 @@
   export default {
     name: 'new-orders-tab',
     components: {
-      VCardMedia, InfiniteLoading
+      InfiniteLoading
     },
     data() {
       return {
