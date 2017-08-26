@@ -18,8 +18,8 @@
                 </v-flex>
               </v-layout>
               <v-layout>
-                <v-flex title v-bind:class="{'white--text': order.status === 'COMPLETED'}">{{ order.description }}
-
+                <v-flex title v-bind:class="{'white--text': order.status === 'COMPLETED'}">
+                  {{ order.description }}
                 </v-flex>
               </v-layout>
               <v-layout>
@@ -72,13 +72,41 @@
       <span>{{ snackbarText }}</span>
       <v-btn flat class="pink--text" @click.native="snackbar = false">Закрыть</v-btn>
     </v-snackbar>
+
+    <v-layout row justify-center>
+      <v-flex>
+        <v-dialog v-model="newOrderDialog">
+          <v-fab-transition v-if="authUser.type === 'Customer'" slot="activator">
+            <v-btn error dark fab fixed bottom right>
+              <v-icon>add</v-icon>
+            </v-btn>
+          </v-fab-transition>
+          <v-card>
+            <form @submit.prevent="submit()">
+              <v-card-title>
+                <span class="headline">Создание заказа</span>
+              </v-card-title>
+              <v-card-text>
+                <v-text-field v-model="newOrderDescription" label="Описание" required></v-text-field>
+                <v-text-field v-model="newOrderPrice" label="Цена" type="number" required></v-text-field>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn primary dark flat @click.native="newOrderDialog = false">Закрыть</v-btn>
+                <v-btn primary dark flat type="submit">Создать</v-btn>
+              </v-card-actions>
+            </form>
+          </v-card>
+        </v-dialog>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 
 <script>
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading';
-  import {getUserOrdersPage, passOrder, acceptOrder} from '../utils/orders-api'
+  import {getUserOrdersPage, passOrder, acceptOrder, publishOrder} from '../utils/orders-api'
   import {getAuthUser} from '../utils/auth'
 
   const moment = require('moment');
@@ -101,6 +129,10 @@
 
         snackbar: false,
         snackbarText: '',
+
+        newOrderDialog: false,
+        newOrderDescription: null,
+        newOrderPrice: null,
 
         selectedOrder: '',
         dialog: false,
@@ -159,6 +191,20 @@
         }).catch(error => {
           this.snackbar = true;
           this.snackbarText = 'Не удалось принять заказ';
+        })
+      },
+      submit() {
+        publishOrder(this.newOrderDescription, this.newOrderPrice).then(order => {
+          this.orders.unshift(order);
+          this.newOrderDialog = false;
+          this.newOrderDescription = null;
+          this.newOrderPrice = null;
+        }).catch(error => {
+          this.newOrderDialog = false;
+          this.newOrderDescription = null;
+          this.newOrderPrice = null;
+          this.snackbar = true;
+          this.snackbarText = 'Не удалось создать заказ';
         })
       }
     }

@@ -25,3 +25,10 @@ export function passOrder(id) {
 export function acceptOrder(id) {
   return HTTP.patch(`/orders/${id}/accept`)
 }
+
+export function publishOrder(description, price) {
+  return HTTP.post('/orders', {description, price}).then(({data}) => {
+    data.createdDate = new Date(data.createdDate + 'Z').toString();
+    return data;
+  })
+}
