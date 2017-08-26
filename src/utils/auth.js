@@ -22,12 +22,18 @@ export function signIn(username, password) {
     setAccessToken(data.access_token);
     HTTP.defaults.headers.common['Authorization'] = `Bearer ${data.access_token}`;
 
-    return HTTP.get('/authenticated').then(({data}) => {
-      setAuthUser(data);
-      router.replace('/')
-    }).catch(error => {
-      signOut()
+    retreiveAuthUser().then(response => {
+      router.replace('/');
     })
+  })
+}
+
+export function retreiveAuthUser() {
+  return HTTP.get('/authenticated').then(({data}) => {
+    setAuthUser(data);
+    return data;
+  }).catch(error => {
+    signOut()
   })
 }
 

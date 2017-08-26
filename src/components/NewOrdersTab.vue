@@ -68,7 +68,7 @@
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading';
   import {getOrdersPage, takeOrder} from '../utils/orders-api'
-  import VCardMedia from "vuetify/src/components/cards/VCardMedia";
+  import {retreiveAuthUser} from '../utils/auth';
 
   const moment = require('moment');
   require('moment/locale/ru');

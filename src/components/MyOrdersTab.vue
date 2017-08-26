@@ -107,7 +107,7 @@
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading';
   import {getUserOrdersPage, passOrder, acceptOrder, publishOrder} from '../utils/orders-api'
-  import {getAuthUser} from '../utils/auth'
+  import {getAuthUser, retreiveAuthUser} from '../utils/auth'
 
   const moment = require('moment');
   require('moment/locale/ru');
@@ -186,8 +186,8 @@
       },
       acceptOrder() {
         acceptOrder(this.selectedOrder.id).then(response => {
+          retreiveAuthUser();
           this.selectedOrder.status = 'COMPLETED';
-          this.authUser.money = this.authUser.money - this.selectedOrder.price;
         }).catch(error => {
           this.snackbar = true;
           this.snackbarText = 'Не удалось принять заказ';
@@ -199,6 +199,8 @@
           this.newOrderDialog = false;
           this.newOrderDescription = null;
           this.newOrderPrice = null;
+          this.snackbar = true;
+          this.snackbarText = 'Заказ опубликован';
         }).catch(error => {
           this.newOrderDialog = false;
           this.newOrderDescription = null;
