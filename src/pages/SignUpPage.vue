@@ -5,8 +5,7 @@
         <form v-on:submit.prevent="submit()">
           <v-container fluid>
             <v-layout row wrap>
-              <v-flex xs12 sm12 md4 offset-md4>
-                <!--<h2 class="display-1">Вход в систему</h2>-->
+              <v-flex xs12 sm8 offset-sm2 md6 offset-md3 lg4 offset-lg4>
                 <v-layout row wrap>
                   <v-flex xs12>
                     <v-text-field
