@@ -47,6 +47,11 @@
       logout() {
         signOut();
       }
+    },
+    mounted() {
+      this.$root.$on('changedAuthUser', authUser => {
+        this.authUser = authUser;
+      })
     }
   }
 </script>

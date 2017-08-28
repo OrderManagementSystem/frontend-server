@@ -112,6 +112,7 @@
       takeOrder() {
         takeOrder(this.selectedOrder.id).then(response => {
           this.orders.splice(this.orders.indexOf(this.selectedOrder), 1);
+          this.$root.$emit('takenOrder', this.selectedOrder);
         }).catch(error => {
           this.snackbar = true;
           this.snackbarText = 'Возможно, заказ уже кто-то взял';

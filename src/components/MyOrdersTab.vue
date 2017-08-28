@@ -186,7 +186,9 @@
       },
       acceptOrder() {
         acceptOrder(this.selectedOrder.id).then(response => {
-          retreiveAuthUser();
+          retreiveAuthUser().then(authUser => {
+            this.$root.$emit('changedAuthUser', authUser);
+          });
           this.selectedOrder.status = 'COMPLETED';
         }).catch(error => {
           this.snackbar = true;
@@ -209,6 +211,16 @@
           this.snackbarText = 'Не удалось создать заказ';
         })
       }
+    },
+    mounted() {
+      retreiveAuthUser().then(authUser => {
+        this.$root.$emit('changedAuthUser', authUser);
+      });
+
+      this.$root.$on('takenOrder', order => {
+        order.status = 'IN_PROGRESS';
+        this.orders.unshift(order);
+      })
     }
   }
 </script>
