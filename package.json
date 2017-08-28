@@ -1,7 +1,7 @@
 {
-  "name": "oms-frontend",
+  "name": "oms-spa",
   "version": "1.0.0",
-  "description": "A Vue.js Order Management System client",
+  "description": "Order Management System Vue.js SPA",
   "author": "kolya-t <toporkov.kolya96@gmail.com>",
   "private": true,
   "scripts": {
