@@ -42,7 +42,7 @@ export function signUp(username, password, userType) {
     username,
     password,
     userType
-  }).then(response => {
+  }, {headers: {'Content-Type': 'application/json'}}).then(response => {
     return signIn(username, password)
   })
 }
